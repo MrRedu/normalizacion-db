@@ -2,7 +2,7 @@
 
 Serie de pasos o reglas que se deben seguir seguir para crear bases de datos funcionales. **Evitando redundancia e inconsistencia de los datos** para crear una base de datos optimizada.
 
-Cuenta de varios pasos, conocidos como **Formas Normal (1FN, 2FN, 3FN, Boyce Cood, 5FN y 6FN)**
+Cuenta de varios pasos, conocidos como **Formas Normal (1FN, 2FN, 3FN, Boyce Cood, 4FN y 5FN)**
 
 ## Primera FormaNormal **(1FN)** / _Comprobación y cero clonación_
 
