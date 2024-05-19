@@ -7,10 +7,11 @@ Cuenta de varios pasos, conocidos como **Formas Normal (1FN, 2FN, 3FN, Boyce Coo
 ## Primera FormaNormal **(1FN)** / _Comprobación y cero clonación_
 
 Tabla de películas
-| Título | Directores | Nacionalidades directores | Formato | Precio | Géneros | Duración | Puntuación | Productora ID |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| El padrino | Francis Ford Coppola | Americano | HD | 30 | **Gánsters, Drama** | 175 | A | 1 |
-| Toy Story | John Lasseter | Americano | HD | 30 | **Animación, Aventura** | 81 | B | 2 |
+
+|   Título   |      Directores      | Nacionalidades directores | Formato | Precio |         Géneros         | Duración | Puntuación | Productora ID |
+| :--------: | :------------------: | :-----------------------: | :-----: | :----: | :---------------------: | :------: | :--------: | :-----------: |
+| El padrino | Francis Ford Coppola |         Americano         |   HD    |   30   |   **Gánsters, Drama**   |   175    |     A      |       1       |
+| Toy Story  |    John Lasseter     |         Americano         |   HD    |   30   | **Animación, Aventura** |    81    |     B      |       2       |
 
 1. ### Comprobación:
    Cada celda debe contener 1 dato. <br>
@@ -82,10 +83,10 @@ Consiste en sacar las columnas que están en conflicto, para que todos los atrib
 
 #### tbl_peliculas
 
-|   Título   |      Directores      | Nacionalidades de directores | Duración | Puntuación | Productora ID |
-| :--------: | :------------------: | :--------------------------: | :------: | :--------: | :-----------: |
-| El padrino | Francis Ford Coppola |          Americano           |   175    |     A      |       1       |
-| Toy Story  |    John Lasseter     |          Americano           |    81    |     B      |       2       |
+|   Título   |      Directores      | Nacionalidades directores | Duración | Puntuación | Productora ID |
+| :--------: | :------------------: | :-----------------------: | :------: | :--------: | :-----------: |
+| El padrino | Francis Ford Coppola |         Americano         |   175    |     A      |       1       |
+| Toy Story  |    John Lasseter     |         Americano         |    81    |     B      |       2       |
 
 #### tbl_precios
 
@@ -97,3 +98,48 @@ Consiste en sacar las columnas que están en conflicto, para que todos los atrib
 | Toy Story  |   3D    |   60   |
 
 Ahora tenemos dos tablas _(tbl_peliculas y tbl_precios)_, donde la primera tiene como PK al atributo **Título**, y la segunda tiene como PK compuesta a los atributos **Título y Formato**, así cumpliendo con nuestro paso número dos de la 2FN.
+
+## Tercera FormaNormal **(3FN)** / _El impostor_
+
+1. ### Cumplir con la 1FN y 2FN
+2. ### No tener dependencias transitivas
+
+> ### Antes de comenzar, recordemos algunos conceptos:
+>
+> 1. #### Dependencias funcionales
+>    Es cuando los atributos dependen de la PK
+>
+> | Clave/Llave primaria (PK) | Columna 1 | Atributo 2 | Columto 3 |
+> | :-----------------------: | :-------: | :--------: | :-------: |
+> |           **1**           |   **X**   |   **Y**    |   **Z**   |
+>
+> _**X**, **Y** y **Z** dependen de la **PK** con valor de **1**_
+>
+> 2. #### Dependencias transitivas
+>    Es cuando un atributo no depende de la PK de la tabla, pero su PK se encuentra en la misma tabla y de esta sí depende
+>
+> | Clave/Llave primaria (PK) | Columna 1 | Atributo 2 | Columto 3 |
+> | :-----------------------: | :-------: | :--------: | :-------: |
+> |           **1**           |   **I**   |  **_K_**   |  **_L_**  |
+>
+> _**I** y **K** dependen de la PK de la tabla con valor **1**, pero **L** tiene como PK a la **K**_
+
+### Detectando al impostor
+
+Ahora que sabemos qué es una **dependencia transitiva**, podemos identificar a nuestro impostor en la siguiente tabla
+
+#### tbl_peliculas
+
+|   Título   |       Director       | Nacionalidades directores | Duración | Puntuación | Productora ID |
+| :--------: | :------------------: | :-----------------------: | :------: | :--------: | :-----------: |
+| El padrino | Francis Ford Coppola |       **Americano**       |   175    |     A      |       1       |
+| Toy Story  |    John Lasseter     |       **Americano**       |    81    |     B      |       2       |
+
+La **Nacionalidades directores** dependen únicamente de **Director**, pero no de la PK de nuestra tabla _(Título)_; o sea, la PK de **Nacionalidades directores** es **Director**, por lo que debería ser otra tabla, para así convertir nuestra dependencia transitiva de la _tbl_peliculas_ a únicamente dependencias funcionales con una nueva tabla (tbl_directores). Cumpliéndose nuestra 3FN.
+
+#### tbl_directores
+
+|       Director       | Nacionalidad |
+| :------------------: | :----------: |
+| Francis Ford Coppola |  Americano   |
+|    John Lasseter     |  Americano   |
